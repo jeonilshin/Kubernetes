@@ -90,3 +90,25 @@ spec:
             port:
               name: use-annotation
 ```
+# HPA (Horizontal Pod Autoscaler)
+```
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: match-hpa
+  namespace: skills
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: match-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60
+```
