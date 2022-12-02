@@ -76,4 +76,4 @@ managedNodeGroups:
 ``` 
 aws eks update-kubeconfig --region ap-northeast-2 --name <YOUR-CLUSTER-NAME>
 ```
-USE THIS WHEN AWS IS NOT CONFIGURED
+**USE THIS WHEN AWS IS NOT CONFIGURED**
