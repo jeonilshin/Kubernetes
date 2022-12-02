@@ -1,0 +1,19 @@
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+Metadata:
+  name: stars
+  namespace: productions
+Spec:
+  selector: role == 'database'
+  types:
+  - Ingress
+  - Egress
+  ingress:
+  - action: Log
+    protocol: TCP
+    source:
+      selector: role == 'frontend'
+  - action: Deny
+    protocol: TCP
+    source:
+      selector: role == 'frontend'

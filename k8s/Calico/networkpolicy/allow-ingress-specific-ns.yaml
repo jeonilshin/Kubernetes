@@ -1,0 +1,19 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  namespace: client
+  name: allow-ui
+spec:
+  podSelector:
+    matchLabels: {}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              role: management-ui
+
+# All packets coming from a specific ns are allowed
+# 특정 네임스페이스에서 들어오는 패킷을 모두 허용
+# 즉,  management-ui는 client namespace에 있는 모든 Pods들에 접근 할 수 있다.
+# management-ui -> client 가능
+# client -> management-ui 불가능
