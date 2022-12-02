@@ -73,6 +73,7 @@ managedNodeGroups:
 
 ``` eksctl create cluster -f cluster.yaml ```
 
- ! If not AWS CONFIGURED was not used
- 
- ``` aws eks update-kubeconfig --region ap-northeast-2 --name <YOUR-CLUSTER-NAME>```
+! If not AWS CONFIGURED was not used
+``` 
+aws eks update-kubeconfig --region ap-northeast-2 --name <YOUR-CLUSTER-NAME>
+```
