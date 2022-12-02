@@ -53,6 +53,7 @@ spec:
     targetPort: 8080
     protocol: TCP
   type: NodePort
+```
 # Ingress
 ```
 apiVersion: networking.k8s.io/v1
@@ -88,5 +89,4 @@ spec:
             name: response-403
             port:
               name: use-annotation
-
 ```
