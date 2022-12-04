@@ -12,22 +12,21 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: match-deployment
+  name: stress-deployment
 spec:
   selector:
     matchLabels:
-      skills/version: v1
-      type: match
+      type: stress
   replicas: 2
   template:
     metadata:
       labels:
         skills/version: v1
-        type: match
+        type: stress
     spec:
       containers:
-      - name: match-container
-        image: 956193760179.dkr.ecr.ap-northeast-2.amazonaws.com/match-ecr:latest
+      - name: stress-container
+        image: 956193760179.dkr.ecr.ap-northeast-2.amazonaws.com/stress-ecr:latest
         ports:
         - containerPort: 8080
         resources:
@@ -42,7 +41,7 @@ apiVersion: v1
 kind: Service
 
 metadata:
-  name: skills-cloud-service-stress
+  name: stress-service
   namespace: skills
 spec:
   selector:
@@ -59,12 +58,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: match
-  namespace: skills
+  name: stress
+  namespace: skills-ingress
   annotations:
-    alb.ingress.kubernetes.io/load-balancer-name: match
+    alb.ingress.kubernetes.io/load-balancer-name: stress
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/subnets: skills-public-a, skills-public-b, skills-public-c
+    alb.ingress.kubernetes.io/subnets: skills-private-a, skills-private-b, skills-private-c
     alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/target-node-labels: skills/dedicated=app
@@ -79,7 +78,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: match
+            name: stress-service
             port:
               number: 80
       - path: /
@@ -95,15 +94,15 @@ spec:
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: match-hpa
+  name: stress-hpa
   namespace: skills
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: match-deployment
-  minReplicas: 1
-  maxReplicas: 10
+    name: stress-deployment
+  minReplicas: 2
+  maxReplicas: 20
   metrics:
   - type: Resource
     resource:
