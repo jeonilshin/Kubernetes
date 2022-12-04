@@ -59,8 +59,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: stress
-  namespace: skills-ingress
+  name: stress-ingress
+  namespace: skills
   annotations:
     alb.ingress.kubernetes.io/load-balancer-name: stress
     alb.ingress.kubernetes.io/scheme: internet-facing
