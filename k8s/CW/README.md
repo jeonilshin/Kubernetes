@@ -11,6 +11,30 @@ kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch
 curl -O https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-configmap.yaml
 vim cwagent-configmap.yaml
 ```
+```
+    {
+      "agent": {
+        "region": "<REGION>"
+      },
+      "logs": {
+        "metrics_collected": {
+          "kubernetes": {
+            "cluster_name": "<CLUSTER-NAME>",
+            "metrics_collection_interval": 60
+          }
+        },
+        "force_flush_interval": 5,
+        "endpoint_override": "logs.ap-northeast-2.amazonaws.com"
+      },
+      "metrics": {
+        "metrics_collected": {
+          "statsd": {
+            "service_address": ":8125"
+          }
+        }
+      }
+    }
+```
 
 ![image](https://user-images.githubusercontent.com/86287920/205487942-e67c77e3-6938-4fcd-9a6c-a7a89f50ea35.png)
 
