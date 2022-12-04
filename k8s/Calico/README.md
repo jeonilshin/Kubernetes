@@ -33,11 +33,19 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      type: match
+      type: stress
   policyTypes:
     - Ingress
     - Egress
-  ingress: []
+  ingress:
+    - to:
+        - ipBlock:
+            cidr: 172.20.0.0/16
+            except:
+              - 172.17.1.0/24
+        - podSelector:
+            matchLabels:
+              type: match
   egress:
     - to:
         - ipBlock:
@@ -46,4 +54,7 @@ spec:
         - port: 443
         - port: 80
         - port: 53
+          protocol: TCP
+        - port: 53
+          protocol: UDP
 ```
