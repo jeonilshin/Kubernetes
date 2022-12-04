@@ -28,24 +28,14 @@ kubectl get daemonset calico-node --namespace calico-system
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: match-network
+  name: stress-network
   namespace: skills
 spec:
   podSelector:
     matchLabels:
       type: stress
   policyTypes:
-    - Ingress
     - Egress
-  ingress:
-    - to:
-        - ipBlock:
-            cidr: 172.20.0.0/16
-            except:
-              - 172.17.1.0/24
-        - podSelector:
-            matchLabels:
-              type: match
   egress:
     - to:
         - ipBlock:
