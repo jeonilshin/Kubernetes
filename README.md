@@ -22,7 +22,8 @@
         │   └── VPN CNI 삭제 후 Calico CNI 사용하기
         │       └── VPN CNI 삭제 후 Calico CNI 사용하기.docx
         ├── ClusterAutoscaler
-        ├── Manifest
+        ├── CW
+        ├── ClusterAutoscaler
         │   ├── deployment.yaml
         │   ├── ingress.yaml
         │   ├── namespace.yaml
