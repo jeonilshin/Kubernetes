@@ -4,57 +4,17 @@ Use CloudWatch Container Insights to collect, aggregate, and summarize metrics a
 
 CloudWatch automatically collects metrics for many resources, such as CPU, memory, disk, and network. Container Insights also provides diagnostic information, such as container restart failures, to help you isolate issues and resolve them quickly. You can also set CloudWatch alarms on metrics that Container Insights collects.
 
-### Install CloudWatch agent, Fluent Bit
-
-1. Create namespace named amazon-cloudwatch by following manifest file.
+## CloudWatch metric
 ```
-apiVersion: v1
-kind: Namespace
-
-metadata:
-  name: amazon-cloudwatch
-```
-``` kubectl create ns amazon-cloudwatch ```
-
-2. After specifying some settings values, install CloudWatch agent and Fluent Bit. Copy and paste one line at a time.
-```
-ClusterName=eks-demo
-RegionName=$AWS_REGION
-FluentBitHttpPort='2020'
-FluentBitReadFromHead='Off'
-[[ ${FluentBitReadFromHead} = 'On' ]] && FluentBitReadFromTail='Off'|| FluentBitReadFromTail='On'
-[[ -z ${FluentBitHttpPort} ]] && FluentBitHttpServer='Off' || FluentBitHttpServer='On'
-```
-Then, through the command below, download yaml file.
-
-``` 
-wget https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluent-bit-quickstart.yaml 
+kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cloudwatch-namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-serviceaccount.yaml
+curl -O https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-configmap.yaml
+vim cwagent-configmap.yaml
 ```
 
-And then, apply environment variables into this yaml file.
+![image](https://user-images.githubusercontent.com/86287920/205487942-e67c77e3-6938-4fcd-9a6c-a7a89f50ea35.png)
 
-``` 
-sed -i 's/{{cluster_name}}/'${ClusterName}'/;s/{{region_name}}/'${RegionName}'/;s/{{http_server_toggle}}/"'${FluentBitHttpServer}'"/;s/{{http_server_port}}/"'${FluentBitHttpPort}'"/;s/{{read_from_head}}/"'${FluentBitReadFromHead}'"/;s/{{read_from_tail}}/"'${FluentBitReadFromTail}'"/' cwagent-fluent-bit-quickstart.yaml 
 ```
-
-Open this yaml file, find DaemonSet object which name is fluent-bit and add the values below the spec.
-```
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: eks.amazonaws.com/compute-type
-          operator: NotIn
-          values:
-          - fargate
-```
-
-The results of extracting some of the pasted ones are as follows. Take care indentation.
-
-![image](https://user-images.githubusercontent.com/86287920/205485087-2eb27ef8-69c3-4844-a522-3caaa2930e71.png)
-
-Deploy yaml file.
-```
-mv cwagent-fluent-bit-quickstart.yaml CW.yaml && kubectl apply -f CW.yaml 
+kubectl apply -f cwagent-configmap.yaml
+kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-daemonset.yaml
 ```
