@@ -9,7 +9,7 @@ CloudWatch automatically collects metrics for many resources, such as CPU, memor
 kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cloudwatch-namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-serviceaccount.yaml
 curl -O https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-configmap.yaml
-vim cwagent-configmap.yaml
+mv cwagent-configmap.yaml CW.yaml
 ```
 ```
     {
@@ -39,6 +39,6 @@ vim cwagent-configmap.yaml
 ![image](https://user-images.githubusercontent.com/86287920/205487942-e67c77e3-6938-4fcd-9a6c-a7a89f50ea35.png)
 
 ```
-kubectl apply -f cwagent-configmap.yaml
+kubectl apply -f CW.yaml
 kubectl apply -f https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/master/k8s-yaml-templates/cwagent-kubernetes-monitoring/cwagent-daemonset.yaml
 ```
