@@ -47,6 +47,7 @@ kubectl apply -f https://github.com/kubernetes-sigs/aws-load-balancer-controller
 ```
 kubectl get deployment -n kube-system aws-load-balancer-controller
 ```
+![image](https://user-images.githubusercontent.com/86287920/204777930-cde4c866-dd6c-4490-b9a9-608fc10629e7.png)
 ```
 kubectl get sa aws-load-balancer-controller -n kube-system -o yaml
 ```
@@ -54,4 +55,3 @@ kubectl get sa aws-load-balancer-controller -n kube-system -o yaml
 ```
 kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o "aws-load-balancer[a-zA-Z0-9-]+")
 ```
-![image](https://user-images.githubusercontent.com/86287920/204777930-cde4c866-dd6c-4490-b9a9-608fc10629e7.png)
