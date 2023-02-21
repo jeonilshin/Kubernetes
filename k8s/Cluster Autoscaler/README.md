@@ -31,7 +31,7 @@ curl -O https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-a
 mv cluster-autoscaler-autodiscover.yaml CA.yaml
 ```
 
-```vim cluster-autoscaler-autodiscover.yaml```
+```vim CA.yaml```
 
 ![image](https://user-images.githubusercontent.com/86287920/201500846-5c8d41e8-d192-4c9c-9c2e-5b6874fa8b73.png)
 
