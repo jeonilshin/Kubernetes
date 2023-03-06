@@ -30,19 +30,25 @@ eksctl create iamserviceaccount \
 ```
 4. Add AWS Load Balancer controller to the cluster.
 ```
-wget https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
-```
-``` kubectl apply -f cert-manager.yaml --validate=false ```
-```
-curl -Lo ALB.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.4.4/v2_4_4_full.yaml
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
 ```
 ```
-sed -i.bak -e '480,488d' ./ALB.yaml
-sed -i.bak -e 's|your-cluster-name|<YOUR-CLUSTER>|' ./ALB.yaml
+helm repo add eks https://aws.github.io/eks-charts
 ```
 ```
-kubectl apply -f ALB.yaml
-kubectl apply -f https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.4.4/v2_4_4_ingclass.yaml
+helm repo update
+```
+```
+helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=<your-cluster> \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller 
+```
+```
+kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
 ```
 ```
 kubectl get deployment -n kube-system aws-load-balancer-controller
@@ -53,5 +59,5 @@ kubectl get sa aws-load-balancer-controller -n kube-system -o yaml
 ```
 ##### aws controller logs
 ```
-kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o "aws-load-balancer[a-zA-Z0-9-]+")
+kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o "aws-load-balancer-controller[a-zA-Z0-9-]+")
 ```
