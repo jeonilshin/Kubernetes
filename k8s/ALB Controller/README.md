@@ -56,5 +56,5 @@ kubectl get sa aws-load-balancer-controller -n kube-system -o yaml
 ```
 ##### aws controller logs
 ```
-kubectl logs -n kube-system $(kubectl get po -n kube-system | egrep -o "aws-load-balancer-controller[a-zA-Z0-9-]+")
+kubectl logs -n kube-system deployment/aws-load-balancer-controller
 ```
