@@ -48,9 +48,6 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   --set serviceAccount.name=aws-load-balancer-controller 
 ```
 ```
-kubectl apply -k "github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master"
-```
-```
 kubectl get deployment -n kube-system aws-load-balancer-controller
 ```
 ![image](https://user-images.githubusercontent.com/86287920/204777930-cde4c866-dd6c-4490-b9a9-608fc10629e7.png)
